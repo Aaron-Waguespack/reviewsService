@@ -20,7 +20,7 @@ const db = knex ({
     client: 'pg',
     connection: {
       connectionString : process.env.DATABASE_URL,
-      database : "sdc_products",
+      database : "SDC_Products",
       user : 'postgres',
       password : 'password',
       host : '127.0.0.1',

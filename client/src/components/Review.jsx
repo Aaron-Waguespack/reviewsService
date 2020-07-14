@@ -9,7 +9,7 @@ class Review extends React.Component {
 
     this.state = {
       starPercentageRounded: 100,
-      helpfulness: this.props.helpfulness
+      helpfulness: this.props.helpfulness,
     };
     this.getRatings = this.getRatings.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -46,12 +46,11 @@ class Review extends React.Component {
   }
 
   addHelpful() {
-    let helpfulPlusOne = this.state.helpfulness+= 1
+    const helpfulPlusOne = this.state.helpfulness += 1;
     this.setState({
       helpfulness: helpfulPlusOne,
     });
   }
-
 
   render() {
     const { starPercentageRounded } = this.state;
@@ -68,9 +67,9 @@ class Review extends React.Component {
       <div className="ratingBody">
         <div className="starsParent">
           <div className="stars-outer">
-            <div className="stars-inner" style={widthStyle}></div>
+            <div className="stars-inner" style={widthStyle} />
           </div>
-          <span className="number-rating"></span>
+          <span className="number-rating" />
         </div>
         <div className="checkMark-userName-date-stars">
           <div className="checkMark">
@@ -90,11 +89,15 @@ class Review extends React.Component {
         <p className="helpfulness">
           Helpful?
           &nbsp;
-          <a href="#" 
-            onClick={this.onClick}>
-              Yes
+          <a
+            href="#"
+            onClick={this.onClick}
+          >
+            Yes
           </a>
-          ({this.props.helpfulness})
+          (
+          {this.props.helpfulness}
+          )
           |
           &nbsp;
           Report
@@ -103,7 +106,7 @@ class Review extends React.Component {
         <div>
           {this.props.photos.length > 0 ? <ImageModal photo={this.props.photos[0].url} id={this.props.photos[0].id} /> : null}
         </div>
-        <hr></hr>
+        <hr />
       </div>
     );
   }

@@ -5,6 +5,7 @@
   "author": "",
   "license": "",
   "scripts": {
+    "data": "node server/db/faker.js",
     "server": "nodemon index/server.js",
     "test": "jest",
     "start": "concurrently --kill-others-on-fail \"npm run build\" \"nodemon server/index.js\"",
@@ -19,6 +20,7 @@
     "cors": "^2.8.5",
     "debug": "^3.2.6",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "jquery": "^3.5.1",
     "knex": "^0.21.1",
     "moment": "^2.27.0",

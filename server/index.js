@@ -57,30 +57,6 @@ app.get('/reviews/:product_id/list', (req, res) => {
 });
 
 app.get('/reviews/:product_id/metas', (req, res) => {
-  db.from('reviews', 'prod_charateristics')
-    .where({ product_id: req.params.product_id })
-    .select('reviews.recommended', 'review_id')
-    .then((dbReviews) => {
-      const photoPromises = dbReviews.map((review) => (
-        console.log(review),
-        db.select()
-          .from('prod_characteristics')
-          .where({ fk_id: review.review_id })
-          .then((Characteristics) => {
-            review.Characteristics = Characteristics;
-            return review;
-          })
-      ));
-      return Promise.all(photoPromises);
-    })
-    .then((reviewsWithPhotos) => {
-      res.send(
-        reviewsWithPhotos,
-      );
-    });
-});
-
-app.get('/reviews/:product_id/metaz', (req, res) => {
   let test = {};
 
   db.from('reviews', 'prod_charateristics')

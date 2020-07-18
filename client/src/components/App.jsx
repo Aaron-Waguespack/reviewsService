@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(' http://127.0.0.1:3020/reviews/102/list')
+    fetch(' http://52.26.193.201:3000/reviews/102/list')
       .then((res) => res.json())
       .then((data) => this.setState({
         reviews: data.results,

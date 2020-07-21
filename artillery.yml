@@ -2,7 +2,7 @@ config:
   target: "http://127.0.0.1:3020/reviews"
   phases:
     - duration: 10
-      arrivalRate: 500
+      arrivalRate: 15
 
   processor: "./artfun.js"
 scenarios:

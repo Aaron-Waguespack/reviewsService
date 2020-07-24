@@ -1,12 +1,23 @@
 config:
-  target: "http://127.0.0.1:3020/reviews"
+  target: "http://lbalancer-545685249.us-east-2.elb.amazonaws.com:8080/reviews"
   phases:
-    - duration: 10
+    - duration: 15
+      arrivalRate: 5
+      name: "warm-up"
+    - duration: 5
       arrivalRate: 15
+      name: "high-load"
+    - duration: 15
+      arrivalRate: 10
+      name: "wind-down"
 
   processor: "./artfun.js"
 scenarios:
   - flow:
-      - function: "setId"
-      - get:
-          url: "/{{ id }}/metas"
+      - loop:
+          - function: "setId"
+          - get:
+              url: "/120/list"
+          - get:
+              url: "/121/list"
+        count: 5

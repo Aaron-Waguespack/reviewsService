@@ -1,8 +1,12 @@
+require('newrelic');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const knex = require('knex');
-const { helpers } = require('faker');
+const redis = require('redis');
+
+const port_redis = process.env.PORT || 6379;
+const redis_client = redis.createClient(port_redis);
 
 const app = express();
 
@@ -16,112 +20,127 @@ app.use(
 
 app.use(express.static('public'));
 
-const PORT = 3020;
+const PORT = 8080;
 
 const db = knex({
   client: 'pg',
   connection: {
     connectionString: process.env.DATABASE_URL,
-    database: 'SDC_Products',
+    database: 'sdc_ec2',
     user: 'postgres',
     password: 'password',
-    host: '127.0.0.1',
-    port: 5433,
+    host: 'ec2-52-14-234-240.us-east-2.compute.amazonaws.com',
+    port: 5432,
   },
 });
 
-app.get('/reviews/:product_id/list', (req, res) => {
-  let list = {};
-  let rvphotos;
+checkCache = (req, res, next) => {
+  const { product_id } = req.params;
 
-  db.select()
-    .from('photos')
-    .where({ fk_id: req.params.product_id })
-    .then((data) => {
-      rvphotos = data;
-      return rvphotos;
-    })
-    .then(() => db.select()
-      .from('reviews')
-      .where({ product_id: req.params.product_id })
-      .then((dbReviews) => {
-        list = {
-          review_id: dbReviews[0].review_id,
-          rating: 5,
-          summary: dbReviews[0].summary,
-          recommended: dbReviews[0].recommended,
-          response: dbReviews[0].response,
-          body: dbReviews[0].body,
-          date: dbReviews[0].review_date,
-          reviewer_name: dbReviews[0].reviewer_name,
-          helpfulness: dbReviews[0].helpfulness,
-          photos: rvphotos,
-        };
-        return list;
-      }))
-    .then((data) => res.send(data));
+  redis_client.get(product_id, (err, data) => {
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+    if (data != null) {
+      res.send(data);
+    } else {
+      next();
+    }
+  });
+};
+
+app.get('/loaderio-022a971c333e22e97ce251d43669281c/',
+  (req, res) => { res.status(200).send('loaderio-022a971c333e22e97ce251d43669281c'); });
+
+app.get('/reviews/:product_id/list', checkCache, async (req, res) => {
+  try {
+    const id = req.params.product_id;
+    const trythis = await db.select('review_id', 'rating', 'recommend',
+      'response', 'body', 'review_date', 'reviewer_name',
+      'helpfulness', 'reported', 'photos', 'characteristics')
+      .from('sdc_schema.reviews')
+      .where({ product_id: id });
+
+    redis_client.setex(id, 3600, JSON.stringify(trythis));
+    return res.send({
+      product: req.params.product_id,
+      page: 0,
+      count: 5,
+      results: trythis,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
 });
 
 app.get('/reviews/:product_id/meta', (req, res) => {
-  let meta = {};
-  db.from('reviews', 'prod_charateristics')
+  db.from('sdc_schema.reviews')
     .where({ product_id: req.params.product_id })
-    .select('product_id', 'reviews.recommended', 'review_id', 'ratings')
-    .then((metaChar) => {
-      meta = {
-        product_id: (metaChar[0].product_id).toString(),
-        recommended: { 0: metaChar[0].recommended },
+    .select('product_id', 'recommend', 'review_id', 'rating', 'characteristics')
+    .then((data) => {
+      const meta = {
+        product_id: req.params.product_id,
         ratings: {
-          1: 1,
-          2: 1,
-          3: 2,
-          4: 1,
-          5: 1,
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+          5: 0,
         },
-        characteristics: {},
+        recommended: 0,
+        characteristics: {
+          size: 0,
+          width: 0,
+          comfort: 0,
+          quality: 0,
+          length: 0,
+          fit: 0,
+        },
       };
-      return meta;
-    })
-    .then(() => db.select()
-      .from('prod_characteristics', 'reviews')
-      .where({ fk_id: req.params.product_id })
-      .then((data) => {
-        for (let i = 0; i < data.length; i++) {
-          const char = data[i];
-          charName = char.name;
-          meta.characteristics[`${charName}`] = {
-            id: char.id,
-            value: char.value,
-          };
-        }
-        return meta;
-      }))
-    .then((data) => res.send(data));
+      for (let i = 0; i < data.length; i++) {
+        const temp = data[i].rating;
+        meta.ratings[temp] = meta.ratings[temp] + 1;
+        meta.recommended += data[i].recommend;
+      }
+      for (let f = 0; f < data.length; f++) {
+        // console.log(data[f].characteristics[5][1][1]);
+        const val = data[f].characteristics;
+        meta.characteristics.size += parseInt(val[0][1][1]) / data.length;
+        meta.characteristics.width += parseInt(val[1][1][1]) / data.length;
+        meta.characteristics.comfort += parseInt(val[2][1][1]) / data.length;
+        meta.characteristics.quality += parseInt(val[3][1][1]) / data.length;
+        meta.characteristics.length += parseInt(val[4][1][1]) / data.length;
+        meta.characteristics.fit += parseInt(val[5][1][1]) / data.length;
+      }
+      res.send(meta);
+    });
 });
 
-// app.post('/test', (req, res) => {
-//   db('users').insert({
-//     name: req.body.name,
-//     email: req.body.email,
-//   })
-//     .then(() => res.sendStatus(200));
-// });
+app.post('/test', (req, res) => {
+  // db('users').insert({
+  //   name: req.body.name,
+  //   email: req.body.email,
+  // })
+  //   .then(() => res.sendStatus(200));
+});
 
-// app.put('/test', (req, res) => {
-//   db('users')
-//     .where({ id: 3 })
-//     .update({ name: 'Little John' }).returning('*')
-//     .then((data) => {
-//       res.send(data);
-//     });
-// });
+app.put('/test', (req, res) => {
+  // db('users')
+  //   .where({ id: 3 })
+  //   .update({ name: 'Little John' }).returning('*')
+  //   .then((data) => {
+  //     res.send(data);
+  //   });
+});
 
-// app.delete('/test', (req, res) => {
-//   db('users')
-//     .where({ id: 4 })
-//     .del()
-//     .then(() => { res.json({ success: true }); });
-// });
+app.delete('/test', (req, res) => {
+  // db('users')
+  //   .where({ id: 4 })
+  //   .del()
+  //   .then(() => { res.json({ success: true }); });
+});
 
 app.listen(PORT, () => {
   console.log(`app is running ${PORT}`);

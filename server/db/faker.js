@@ -6,6 +6,7 @@ writeUsers.write('product_id|review_id|rating|summary|recommend|response|body|re
 function writeTenMillionUsers(writer, encoding, callback) {
   let i = 10000;
   let id = 0;
+  let rid = 0;
   function write() {
     let ok = true;
     do {
@@ -14,7 +15,8 @@ function writeTenMillionUsers(writer, encoding, callback) {
       if (id % 190 === 0) {
         const product_id = id;
         for (let j = 1; j < Math.floor(Math.random() * 1000) + 500; j++) {
-          const review_id = j;
+          rid += 1;
+          const review_id = rid;
           const rating = Math.floor(Math.random() * 5) + 1;
           const summary = faker.lorem.sentence(4);
           const recommend = Math.floor(Math.random() * 2);
@@ -25,7 +27,7 @@ function writeTenMillionUsers(writer, encoding, callback) {
           const helpfulness = Math.floor(Math.random() * 2);
           const reported = 0;
           const photos = `{${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()}}`;
-          const characteristics = `{{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,width},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,comfort},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,quality},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,length},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,fit},{id,1},{value,${Math.floor(Math.random() * 5) + 1}}}`;
+          const characteristics = `{{{size,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{width,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{comfort,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{quality,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{length,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{fit,0},{value,${Math.floor(Math.random() * 5) + 1}}}}`;
           const data = `${product_id}|${review_id}|${rating}|${summary}|${recommend}|${response}|${body}|${review_date}|${reviewer_name}|${helpfulness}|${reported}|${photos}|${characteristics}\n`;
           if (i === 0) {
             writer.write(data, encoding, callback);
@@ -38,8 +40,9 @@ function writeTenMillionUsers(writer, encoding, callback) {
       }
       if (id % 47 === 0) {
         const product_id = id;
-        for (let j = 1; j < Math.floor(Math.random() * 500) + 200; j++) {
-          const review_id = j;
+        for (let k = 1; k < Math.floor(Math.random() * 500) + 200; k++) {
+          rid += 1;
+          const review_id = rid;
           const rating = Math.floor(Math.random() * 5) + 1;
           const summary = faker.lorem.sentence(4);
           const recommend = Math.floor(Math.random() * 2);
@@ -50,7 +53,7 @@ function writeTenMillionUsers(writer, encoding, callback) {
           const helpfulness = Math.floor(Math.random() * 2);
           const reported = 0;
           const photos = `{${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()}}`;
-          const characteristics = `{{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,width},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,comfort},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,quality},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,length},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,fit},{id,1},{value,${Math.floor(Math.random() * 5) + 1}}}`;
+          const characteristics = `{{{size,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{width,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{comfort,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{quality,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{length,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{fit,0},{value,${Math.floor(Math.random() * 5) + 1}}}}`;
           const data = `${product_id}|${review_id}|${rating}|${summary}|${recommend}|${response}|${body}|${review_date}|${reviewer_name}|${helpfulness}|${reported}|${photos}|${characteristics}\n`;
           if (i === 0) {
             writer.write(data, encoding, callback);
@@ -63,8 +66,9 @@ function writeTenMillionUsers(writer, encoding, callback) {
       }
       if (id % 9 === 0) {
         const product_id = id;
-        for (let j = 1; j < Math.floor(Math.random() * 200) + 75; j++) {
-          const review_id = j;
+        for (let l = 1; l < Math.floor(Math.random() * 200) + 75; l++) {
+          rid += 1;
+          const review_id = rid;
           const rating = Math.floor(Math.random() * 5) + 1;
           const summary = faker.lorem.sentence(4);
           const recommend = Math.floor(Math.random() * 2);
@@ -75,7 +79,7 @@ function writeTenMillionUsers(writer, encoding, callback) {
           const helpfulness = Math.floor(Math.random() * 2);
           const reported = 0;
           const photos = `{${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()}}`;
-          const characteristics = `{{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,width},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,comfort},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,quality},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,length},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,fit},{id,1},{value,${Math.floor(Math.random() * 5) + 1}}}`;
+          const characteristics = `{{{size,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{width,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{comfort,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{quality,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{length,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{fit,0},{value,${Math.floor(Math.random() * 5) + 1}}}}`;
           const data = `${product_id}|${review_id}|${rating}|${summary}|${recommend}|${response}|${body}|${review_date}|${reviewer_name}|${helpfulness}|${reported}|${photos}|${characteristics}\n`;
           if (i === 0) {
             writer.write(data, encoding, callback);
@@ -87,8 +91,9 @@ function writeTenMillionUsers(writer, encoding, callback) {
         }
       } else {
         const product_id = id;
-        for (let j = 1; j < Math.floor(Math.random() * 75) + 2; j++) {
-          const review_id = j;
+        for (let m = 1; m < Math.floor(Math.random() * 75) + 2; m++) {
+          rid += 1;
+          const review_id = rid;
           const rating = Math.floor(Math.random() * 5) + 1;
           const summary = faker.lorem.sentence(4);
           const recommend = Math.floor(Math.random() * 2);
@@ -99,7 +104,7 @@ function writeTenMillionUsers(writer, encoding, callback) {
           const helpfulness = Math.floor(Math.random() * 2);
           const reported = 0;
           const photos = `{${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()},${faker.internet.url()}}`;
-          const characteristics = `{{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,width},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,comfort},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,quality},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,size},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,length},{id,1},{value,${Math.floor(Math.random() * 5) + 1}},{0,fit},{id,1},{value,${Math.floor(Math.random() * 5) + 1}}}`;
+          const characteristics = `{{{size,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{width,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{comfort,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{quality,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{length,0},{value,${Math.floor(Math.random() * 5) + 1}}},{{fit,0},{value,${Math.floor(Math.random() * 5) + 1}}}}`;
           const data = `${product_id}|${review_id}|${rating}|${summary}|${recommend}|${response}|${body}|${review_date}|${reviewer_name}|${helpfulness}|${reported}|${photos}|${characteristics}\n`;
           if (i === 0) {
             writer.write(data, encoding, callback);

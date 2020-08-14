@@ -11,7 +11,7 @@ class ReviewList extends React.Component {
       showing: 2,
       reviewList: [],
       showAdd: false,
-    }
+    };
     this.moreReviews = this.moreReviews.bind(this);
     this.showModal = this.showModal.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -27,10 +27,10 @@ class ReviewList extends React.Component {
     this.setState({
       showing: oldShowing,
     });
-    let newReviewList = this.props.reviewData.slice(0, this.state.showing)
+    const newReviewList = this.props.reviewData.slice(0, this.state.showing);
     this.setState({
       reviewList: newReviewList,
-    })
+    });
   }
 
   onClick(e) {
@@ -38,7 +38,7 @@ class ReviewList extends React.Component {
   }
 
   onClose() {
-    console.log('onClose')
+    console.log('onClose');
     this.closeModal();
   }
 
@@ -49,16 +49,18 @@ class ReviewList extends React.Component {
   }
 
   closeModal() {
-    console.log('closeModal')
+    console.log('closeModal');
     this.setState({
       showAdd: false,
-    })
+    });
   }
 
   render() {
-    let { reviewData, sortByNew, sortByHelpful, sortByRelevant } = this.props;
-    let { showing } = this.state;
-    let visibleStyle = (this.state.showing > this.props.reviewData.length ? {display: 'none'} : {display: 'inline-block'})
+    const {
+      reviewData, sortByNew, sortByHelpful, sortByRelevant,
+    } = this.props;
+    const { showing } = this.state;
+    const visibleStyle = (this.state.showing > this.props.reviewData.length ? { display: 'none' } : { display: 'inline-block' });
     return (
       <div className="review-container">
         <Sort
@@ -68,25 +70,27 @@ class ReviewList extends React.Component {
           sortByRelevant={sortByRelevant}
         />
         <div className="table table-striped">
-          {this.props.reviewData.map(function(product, i) {
+          {this.props.reviewData.map((product, i) => {
             if (i < showing) {
-              return <Review
-              key={i} 
-              name={product.reviewer_name}
-              rating={product.rating}
-              summary={product.summary}
-              body={product.body}
-              date={product.date}
-              helpfulness={product.helpfulness}
-              recommend={product.recommend}
-              photos={product.photos}
-              reviewData={reviewData}
-            />
+              return (
+                <Review
+                  key={i}
+                  name={product.reviewer_name}
+                  rating={product.rating}
+                  summary={product.summary}
+                  body={product.body}
+                  date={product.date}
+                  helpfulness={product.helpfulness}
+                  recommend={product.recommend}
+                  photos={product.photos}
+                  reviewData={reviewData}
+                />
+              );
             }
           })}
         </div>
-          <button className="more-reviews-button" style={visibleStyle} onClick={this.moreReviews}>More Reviews</button>
-          <AddReview show={this.state.showAdd} />
+        <button className="more-reviews-button" style={visibleStyle} onClick={this.moreReviews}>More Reviews</button>
+        <AddReview show={this.state.showAdd} />
       </div>
     );
   }

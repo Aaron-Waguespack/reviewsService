@@ -5,6 +5,7 @@
   "author": "",
   "license": "",
   "scripts": {
+    "data": "node server/db/faker.js",
     "server": "nodemon index/server.js",
     "test": "jest",
     "start": "concurrently --kill-others-on-fail \"npm run build\" \"nodemon server/index.js\"",
@@ -13,22 +14,29 @@
   },
   "dependencies": {
     "babel-preset-airbnb": "^5.0.0",
+    "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "debug": "^3.2.6",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "jquery": "^3.5.1",
+    "knex": "^0.21.1",
     "moment": "^2.27.0",
+    "pg": "^8.2.2",
     "rater-js": "^1.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "sass": "^1.26.8"
+    "sass": "^1.26.8",
+    "redis": "^3.0.2",
+    "redis-server": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
+    "artillery": "^1.6.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",

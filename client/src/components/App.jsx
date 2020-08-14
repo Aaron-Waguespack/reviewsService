@@ -29,36 +29,36 @@ class App extends Component {
 
   componentDidMount() {
     fetch(' http://52.26.193.201:3000/reviews/102/list')
-      .then(res => res.json())
-      .then(data => this.setState({
+      .then((res) => res.json())
+      .then((data) => this.setState({
         reviews: data.results,
         filterReviews: data.results,
       }));
   }
 
   filterReviewList(e) {
-    //toggle
+    // toggle
     this.setState({
-      style: 'block'
-    })
-    this.toggleSelected(e)
+      style: 'block',
+    });
+    this.toggleSelected(e);
   }
 
   componentDidUpdate(previousProps, previousState) {
-    let { filterReviews, reviews } = this.state;
-    let newArr = [];
-    let stateEntries = Object.entries(this.state);
+    const { filterReviews, reviews } = this.state;
+    const newArr = [];
+    const stateEntries = Object.entries(this.state);
     for (let j = 0; j < stateEntries.length; j++) {
       if (!stateEntries[j][1] && !Array.isArray(stateEntries[j][1])) {
-        let num = Number(stateEntries[j][0].substring(4, 5))
+        const num = Number(stateEntries[j][0].substring(4, 5));
         for (let k = 0; k < reviews.length; k++) {
           if (reviews[k].rating === num) {
-            newArr.push(reviews[k])
+            newArr.push(reviews[k]);
           }
         }
       }
     }
-    let previousStateStrung = JSON.stringify(previousState)
+    const previousStateStrung = JSON.stringify(previousState);
     if (previousStateStrung !== JSON.stringify(this.state)) {
       this.setState({
         filterReviews: newArr,
@@ -68,17 +68,17 @@ class App extends Component {
 
   handleChange(event) {
     const { value } = event.target;
-    this.setState(() => {
-      return {
-        value,
-      };
-    });
+    this.setState(() => ({
+      value,
+    }));
   }
 
   toggleSelected(e) {
     const stateEntries = Object.entries(this.state);
-    let { filterCounter } = this.state;
-    let { hide5Stars, hide4Stars, hide3Stars, hide2Stars, hide1Stars } = this.state;
+    const { filterCounter } = this.state;
+    const {
+      hide5Stars, hide4Stars, hide3Stars, hide2Stars, hide1Stars,
+    } = this.state;
     for (let i = 0; i < stateEntries.length; i++) {
       if (filterCounter === 0 && stateEntries[i][0].includes(Number(e.target.innerText[0]))) {
         this.setState({
@@ -89,11 +89,11 @@ class App extends Component {
           hide1Stars: true,
           filterCounter: 1,
         });
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           [stateEntries[i][0]]: !prevState[stateEntries[i][0]],
         }));
       } else if (!Array.isArray(stateEntries[i][1]) && stateEntries[i][0].includes(Number(e.target.innerText[0]))) {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           [stateEntries[i][0]]: !prevState[stateEntries[i][0]],
         }));
       }
@@ -113,7 +113,7 @@ class App extends Component {
   }
 
   sortByNew() {
-    let state = this.state.filterReviews;
+    const state = this.state.filterReviews;
     function customSort(a, b) {
       if (a.date > b.date) {
         return -1;
@@ -128,7 +128,7 @@ class App extends Component {
   }
 
   sortByHelpful() {
-    let state = this.state.filterReviews;
+    const state = this.state.filterReviews;
     function customSort(a, b) {
       if (a.helpfulness > b.helpfulness) {
         return -1;
@@ -143,13 +143,13 @@ class App extends Component {
   }
 
   sortByRelevant() {
-    let state = this.state.filterReviews;
+    const state = this.state.filterReviews;
     function customSort(a, b) {
-      let aggregate = 0;
-      let dateScoreA = (new Date(a.date).getTime() / 1000.0) / 10000000;
-      let scoreA = dateScoreA + ((a.helpfulness / 10) * (a.helpfulness / 2));
-      let dateScoreB = (new Date(b.date).getTime() / 1000.0) / 10000000;
-      let scoreB = dateScoreB + ((b.helpfulness / 10) * (a.helpfulness / 2));
+      const aggregate = 0;
+      const dateScoreA = (new Date(a.date).getTime() / 1000.0) / 10000000;
+      const scoreA = dateScoreA + ((a.helpfulness / 10) * (a.helpfulness / 2));
+      const dateScoreB = (new Date(b.date).getTime() / 1000.0) / 10000000;
+      const scoreB = dateScoreB + ((b.helpfulness / 10) * (a.helpfulness / 2));
       if (scoreA > scoreB) {
         return -1;
       } if (scoreA < scoreB) {
@@ -163,33 +163,35 @@ class App extends Component {
   }
 
   render() {
-    const { reviews, filterReviews, hide5Stars, hide4Stars, hide3Stars, hide2Stars, hide1Stars, style } = this.state;
+    const {
+      reviews, filterReviews, hide5Stars, hide4Stars, hide3Stars, hide2Stars, hide1Stars, style,
+    } = this.state;
     return (
       <div className="row container">
-        <div className="d-none d-sm-block col-xl"></div>
-          {/* <div className="sidebarAndRatings"> */}
-          <div className="col">
-            <Sidebar
-              reviewData={filterReviews}
-              filter={this.filterReviewList}
-              removeFilter={this.removeFilter}
-              hide5Stars={hide5Stars}
-              hide4Stars={hide4Stars}
-              hide3Stars={hide3Stars}
-              hide2Stars={hide2Stars}
-              hide1Stars={hide1Stars}
-              style={style}
-            />
-          </div>
-            <div className="col-7">
-            <ReviewList
-              reviewData={filterReviews}
-              sortByNew={this.sortByNew}
-              sortByHelpful={this.sortByHelpful}
-              sortByRelevant={this.sortByRelevant}
-            />
-            </div>
-          {/* </div> */}
+        <div className="d-none d-sm-block col-xl" />
+        {/* <div className="sidebarAndRatings"> */}
+        <div className="col">
+          <Sidebar
+            reviewData={filterReviews}
+            filter={this.filterReviewList}
+            removeFilter={this.removeFilter}
+            hide5Stars={hide5Stars}
+            hide4Stars={hide4Stars}
+            hide3Stars={hide3Stars}
+            hide2Stars={hide2Stars}
+            hide1Stars={hide1Stars}
+            style={style}
+          />
+        </div>
+        <div className="col-7">
+          <ReviewList
+            reviewData={filterReviews}
+            sortByNew={this.sortByNew}
+            sortByHelpful={this.sortByHelpful}
+            sortByRelevant={this.sortByRelevant}
+          />
+        </div>
+        {/* </div> */}
         {/* <div className="d-none d-sm-block col-lg-2"></div> */}
         {/* </div> */}
         {/* <div className="d-sm-block col"></div> */}

@@ -21,10 +21,11 @@ With 2 servers (1 mirrored) I was able to get 2000 rps with less than 2000ms lat
 React, Node, Express, PostgreSQL, Redis, AWS, Artillery.io, Loader.io, New Relic
 
 ### Screenshot of Legacy Front-End
-
+![reviews](/reviews.png)
 
 ### Usage
 To run this repo, you will need to install dependencies "npm install" and run "npm start" script.
+Please note server addresses will need to be updated.
 
 ### Requirements
 ##### dependencies":

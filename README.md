@@ -8,14 +8,14 @@ Connecting server and database to existing frontend.
 Deploying on AWS EC2 micro service with multiple servers and a load balancer.
 
 ### Project Goals
-Supporting a minimun of 100 rps with less than 1% error rate and 2000 ms latency.
+Supporting a minimum of 100 rps with less than 1% error rate and 2000 ms latency.
 
 ### Achievements and Optimizations
 Chose PostgreSQL database and optimized and indexed schema for better query times.
 Seeded a PostgreSQL database with over 15 million records.
-Set up backend to be scaleable with mirrored servers.
+Set up the backend to be scalable with mirrored servers.
 Set up redis cache for better query times.
-With 2 servers (1 mirrored) I was able to get 2000 rps with less than 2000ms latency and 1% error rate with the ablilty to add mirrored servers on demand.
+With 2 servers (1 mirrored) I was able to get 2000 rps with less than 2000ms latency and 1% error rate with the ability to add mirrored servers on demand.
 
 ### Technologies Used
 React, Node, Express, PostgreSQL, Redis, AWS, Artillery.io, Loader.io, New Relic
@@ -27,7 +27,6 @@ React, Node, Express, PostgreSQL, Redis, AWS, Artillery.io, Loader.io, New Relic
 To run this repo, you will need to install dependencies "npm install" and run "npm start" script.
 Please note server addresses will need to be updated.
 
-### Requirements
 ##### dependencies":
     "babel-preset-airbnb": "^5.0.0",
     "body-parser": "^1.19.0",
